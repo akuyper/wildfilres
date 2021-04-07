@@ -1,0 +1,90 @@
+---
+title: "Group Project 1"
+author: "STAT 301-1"
+date: ''
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r echo=F, message=FALSE, warning=FALSE}
+library(tidyverse)
+wf <- read_csv("wildfires.csv")
+ranger <- tibble(x = c(10, -5, -5), y = c(5, 2, -8))
+wildlife <- tibble(x = c(15, 18, 18, 16.5, 15), y = c(16, 16, 18, 19, 18))
+```
+
+# Assignment
+
+For the group project, you will be using the wildfires dataset (wildfires.csv). This data describes 500 wildfires that started within a large national park. The origin of each fire is shown below in red. 
+```{r, echo=F}
+ggplot(wf) +
+  geom_point(aes(x, y), color = "firebrick2", shape = 8) +
+  geom_point(data = ranger, aes(x, y), color = "forestgreen", size = 4, shape = 17) +
+  geom_polygon(data = wildlife, aes(x, y), fill = "cyan3") +
+  labs(x = "", y = "") +
+  theme(
+    axis.ticks = element_blank(), 
+    axis.text = element_blank(), 
+    panel.grid.minor = element_blank(), 
+    panel.background = element_rect(fill = "navajowhite2")
+    ) +
+  annotate("text", x = 17.25, y = -15, label = "Ranger Station", hjust = 1) +
+  annotate("point", x = 18.25, y = -15, shape = 17, color = "forestgreen", size = 5) +
+  annotate("text", x = 17.25, y = -13.1, label = "Wildlife Protection Zone", hjust = 1) +
+  annotate("point", x = 18.25, y = -13.1, shape = 16, color = "cyan3", size = 5) +
+  annotate("text", x = 17.25, y = -11.2, label = "Fire Origin", hjust = 1) +
+  annotate("point", x = 18.25, y = -11.2, shape = 8, color = "firebrick2", size = 5)
+```
+
+A number of factors may affect how large a fire becomes. For example, if it starts near a ranger station (green triangles on the map) at a time when it is manned, fires may be less likely to spread. 
+
+Your job is to make two types of predictions. First, you must predict how large a fire will be. In the context of the data, you will be using all of the variables (except 'wlf') to predict the 'burned' column. 
+
+Second, you will need to predict whether a fire will spread to a wildlife protection zone denoted by the light green triangle in the northeastern section of the park. In other words, use all of the columns (except 'burned') to predict the 'wlf' column. 
+
+Both prediction tasks are detailed in the next two sections, followed by a description of the dataset.
+
+
+### Task 1: Area Burned
+The total area burned by a wildfire is of great concern to government planners. This is captured in the 'burned' column of the wildfires dataset. Given the data (excluding the 'wlf' column), build the best model you can to predict the number of acres a wildfire is likely to burn. You are free to use any model or predictor you choose (e.g., linear regression, ridge regression, lasso, etc.) that minimizes test error. 
+
+### Task 2: Wildlife Protection
+Located in the northeast of the wilderness area is a wildlife protection zone. It is home to several rare and endangered species, and thus conservationists and park rangers are very interested in whether a given fire is likely to reach it. Build a model that predicts whether a fire will reach this zone. As with the first task, you are free to use any model or method you choose that minimizes test error.
+
+### Submission & Evaluation
+Your team submissions will comprise two products. First, you will need to write a report about your models. Your report should include a description of the data, describe the methods you used, and present your final models. Be sure to justify your methods and clearly explain what you did using the theory we have covered in class. When you present your models, interpret them (e.g., what is a useful predictor?)
+
+Moreover, as with the homework, reports should include very little code (preferably none), but rather should communicate why you chose the methods and predictors you did, and how you tweaked and adjusted your approach in light of diagnostics and estimated test error.
+
+Second, your team will submit an R script containing code to fit your model. This code must do the following:
+  
+  1. Read in the wildfires dataset and store it as 'train'.
+  2. Fit your model predicting the size of the fire (area burned), and store it as 'model1'.
+  3. Fit your model predicting whether a fire will reach the wildlife protection zone and store it as 'model2'.
+
+Save your R script with the following naming convention: the word 'gproj' followed by an underscore followed by your team member initials. For example, I would submit an R file named 'gproj_js.R'.
+
+We will evaluate both your report and your models. Reports will be graded for clarity, completeness, and whether you demonstrated sound use of theory and practice. Your models will be tested against a batch of data we have held out.  
+
+
+# Data
+The dataset contains observations on 350 fires started in a large national park. For each fire, the data contain 15 variables, in addition to two outcomes ('burned' and 'wlf'). These variables are:
+
+  * __`r names(wf)[1]`__, and __`r names(wf)[2]`__: the (x, y) coordinates of where the fire started.
+  * __`r names(wf)[3]`__: air temperature when the fire started
+  * __`r names(wf)[4]`__: air humidity when the fire started
+  * __`r names(wf)[5]`__: wind speed when the fire started
+  * __`r names(wf)[6]`__: wind direction when the fire started
+  * __`r names(wf)[7]`__: rainfall in the week preceding the fire
+  * __`r names(wf)[8]`__: number of days since the last fire
+  * __`r names(wf)[9]`__: amount of vulnerable (unburned) foliage near the fire
+  * __`r names(wf)[10]`__: indicates if another fire is ongoing when the fire starts
+  * __`r names(wf)[11]`__: indicates if the fire started near a ranger station, and that ranger station was manned. Note that even if a fire started near a ranger station, that station may not have been manned at the time.
+  * __`r names(wf)[12]`__: indicates if the fire occurred before 1950, which it became more common to use planes and helicopters to fight forest fires.
+  * __`r names(wf)[13]`__: indicates if a helicopter was available to fight the fire
+  * __`r names(wf)[14]`__: composite score for the resources available to fight the fire, including manpower and available air support
+  * __`r names(wf)[15]`__: indicates the level of foot traffic in the national park when the fire started
+  * __`r names(wf)[16]`__: number of hectares burned by the fire
+  * __`r names(wf)[17]`__: indicates fire reached the wildlife protection zone
+    
