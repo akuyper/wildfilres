@@ -1,0 +1,134 @@
+---
+title: "Wildfires"
+subtitle: "Simulated Dataset"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    embed-resources: true
+    link-external-newwindow: true
+
+execute:
+  warning: false
+  
+from: markdown+emoji  
+---
+
+```{r}
+#| label: setup
+#| echo: false
+
+# load package(s)
+library(tidyverse)
+
+# load datasets
+wf <- read_csv("wildfires.csv")
+
+ranger <- tibble(
+  x = c(10, -5, -5),
+  y = c(5, 2, -8)
+)
+
+wildlife <- tibble(
+  x = c(15, 18, 18, 16.5, 15),
+  y = c(16, 16, 18, 19, 18)
+)
+```
+
+## Description
+
+This data describes 500 wildfires that started within a large national park. The origin of each fire is shown below in red.
+
+```{r}
+#| label: plot
+#| echo: false
+
+
+ggplot(wf) +
+  geom_point(
+    mapping = aes(x, y),
+    color = "firebrick2",
+    shape = 8
+  ) +
+  geom_point(
+    data = ranger,
+    mapping = aes(x, y),
+    color = "forestgreen",
+    size = 4,
+    shape = 17
+  ) +
+  geom_polygon(
+    data = wildlife,
+    mapping = aes(x, y),
+    fill = "cyan3"
+  ) +
+  labs(x = NULL, y = NULL) +
+  theme(
+    axis.ticks = element_blank(),
+    axis.text = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.background = element_rect(fill = "navajowhite2")
+  ) +
+  annotate(
+    "text",
+    x = 17.25, y = -15,
+    label = "Ranger Station",
+    hjust = 1
+  ) +
+  annotate(
+    "point",
+    x = 18.25, y = -15,
+    shape = 17,
+    color = "forestgreen",
+    size = 5
+  ) +
+  annotate(
+    "text", 
+    x = 17.25, y = -13.1, 
+    label = "Wildlife Protection Zone", 
+    hjust = 1
+    ) +
+  annotate(
+    "point", 
+    x = 18.25, y = -13.1, 
+    shape = 16, 
+    color = "cyan3", 
+    size = 5
+    ) +
+  annotate(
+    "text", 
+    x = 17.25, y = -11.2, 
+    label = "Fire Origin", 
+    hjust = 1
+    ) +
+  annotate(
+    "point", 
+    x = 18.25, y = -11.2, 
+    shape = 8, 
+    color = "firebrick2", 
+    size = 5
+    )
+```
+
+## Data
+
+The dataset contains observations on 500 fires started in a large national park. For each fire, the data contain 15 variables, in addition there are two outcomes ('burned' and 'wlf'). These variables are:
+
+-   **`r names(wf)[1]`**, and **`r names(wf)[2]`**: the (x, y) coordinates of where the fire started.
+-   **`r names(wf)[3]`**: air temperature when the fire started
+-   **`r names(wf)[4]`**: air humidity when the fire started
+-   **`r names(wf)[5]`**: wind speed when the fire started
+-   **`r names(wf)[6]`**: wind direction when the fire started
+-   **`r names(wf)[7]`**: rainfall in the week preceding the fire
+-   **`r names(wf)[8]`**: number of days since the last fire
+-   **`r names(wf)[9]`**: amount of vulnerable (unburned) foliage near the fire
+-   **`r names(wf)[10]`**: indicates if another fire is ongoing when the fire starts
+-   **`r names(wf)[11]`**: indicates if the fire started near a ranger station, and that ranger station was manned. Note that even if a fire started near a ranger station, that station may not have been manned at the time.
+-   **`r names(wf)[12]`**: indicates if the fire occurred before 1950, which it became more common to use planes and helicopters to fight forest fires.
+-   **`r names(wf)[13]`**: indicates if a helicopter was available to fight the fire
+-   **`r names(wf)[14]`**: composite score for the resources available to fight the fire, including manpower and available air support
+-   **`r names(wf)[15]`**: indicates the level of foot traffic in the national park when the fire started
+-   **`r names(wf)[16]`**: number of hectares burned by the fire
+-   **`r names(wf)[17]`**: indicates fire reached the wildlife protection zone
