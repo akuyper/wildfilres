@@ -1,19 +1,23 @@
 ---
 title: "Wildfires"
 subtitle: "Simulated Dataset"
-date: "`r format(Sys.time(), '%d %B, %Y')`"
+pagetitle: "Wildfires Codebook"
 
 format:
   html:
     toc: true
-    toc-depth: 3
+    toc-depth: 4
+    toc-location: left
     embed-resources: true
+    code-fold: false
     link-external-newwindow: true
 
 execute:
   warning: false
   
-from: markdown+emoji  
+from: markdown+emoji
+reference-location: margin
+citation-location: margin 
 ---
 
 ```{r}
@@ -114,7 +118,7 @@ ggplot(wf) +
 
 ## Data
 
-The dataset contains observations on 500 fires started in a large national park. For each fire, the data contain 15 variables, in addition there are two outcomes ('burned' and 'wlf'). These variables are:
+The simulated dataset contains observations on 500 fires started in a large national park. For each fire, the data contain 15 variables, in addition there are two outcomes ('burned' and 'wlf'). These variables are:
 
 -   **`r names(wf)[1]`**, and **`r names(wf)[2]`**: the (x, y) coordinates of where the fire started.
 -   **`r names(wf)[3]`**: air temperature when the fire started
